@@ -1,8 +1,10 @@
 const connectToMongo = require('./db');
 const express = require('express'); 
 const cors = require('cors');
+const geminiRoutes = require('./routes/gemini');
 const nutritionRoute = require('./routes/nutrition');
 require('dotenv').config(); // must come BEFORE using process.env
+
 
 const app = express();
 const port = 5000;
@@ -24,6 +26,9 @@ app.use('/api/nutrition', nutritionRoute);
 app.use('/api/workouts', require('./routes/workouts'));
 app.use('/api/water', require('./routes/water'));
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/gemini', geminiRoutes);
+
+
 
 
 // Connect to MongoDB first, then start server
