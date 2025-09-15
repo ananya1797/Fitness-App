@@ -4,7 +4,7 @@ const axios = require('axios');
 const fetchuser = require('../middleware/fetchuser');
 require('dotenv').config();
 
-router.post('/chat',fetchuser, async (req, res) => {
+router.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
 
   try {

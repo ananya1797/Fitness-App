@@ -11,12 +11,12 @@ const port = 5000;
 
 app.use(cors());
 
-
+//http://localhost:5000/api/auth
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Welcome to FTA - 2025');
+  res.send('Welcome to FTA - 2025 Anaanya');
 });
 
 // Available routes
