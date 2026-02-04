@@ -19,3 +19,8 @@ FitnessTrackingApp is a full-stack web application designed to help users track 
 - View and edit user dashboard
 - Contact form that submits messages to the backend
 - JWT authentication for protected routes
+
+Deployed 
+Frontend (Vercel) : https://fitness-app-frontend-chi.vercel.app
+Backend (Render) : https://fitness-app-backend-dwj1.onrender.com/
+Database (MongoDB Atlas)
