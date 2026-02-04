@@ -108,7 +108,7 @@ function calculateStreak(dates) {
   const fetchWorkouts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/workouts/myworkouts', {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/workouts/myworkouts`, {
         headers: { 'auth-token': token }
       });
 
@@ -161,7 +161,7 @@ setShowToast(currentStreak > 1);
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/workouts/logworkout', form, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/workouts/logworkout`, form, {
         headers: { 'Content-Type': 'application/json', 'auth-token': token }
       });
 

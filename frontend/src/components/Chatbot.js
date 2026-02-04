@@ -17,7 +17,11 @@ const Chatbot = () => {
     setMessages(prev => [...prev, userMessage]);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/gemini/chat', { message: input });
+      const response = await axios.post(
+  `${process.env.REACT_APP_API_URL}/api/gemini/chat`,
+  { message: input }
+);
+
       const botMessage = { sender: 'bot', text: response.data.reply };
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {

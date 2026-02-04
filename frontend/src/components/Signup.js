@@ -40,7 +40,7 @@ function Signup() {
     delete payload.confirmPassword; // Don't send this to backend
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/createUser', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/createUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

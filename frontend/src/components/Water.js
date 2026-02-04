@@ -64,7 +64,7 @@ function Water() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:5000/api/water/log',
+        `${process.env.REACT_APP_API_URL}/api/water/log`,
         { glasses },
         { headers: { 'Content-Type': 'application/json', 'auth-token': token } }
       );

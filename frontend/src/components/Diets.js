@@ -97,7 +97,7 @@ const Diets = () => {
     if (!query.trim()) return;
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/nutrition/${encodeURIComponent(query)}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/nutrition/${encodeURIComponent(query)}`);
       const data = res.data;
 
       if (!data.calories || !data.fat || !data.protein) {

@@ -14,7 +14,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const res = await axios.post('http://localhost:5000/api/contact', formData, {
+    const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/contact`, formData, {
       headers: {
         'auth-token': localStorage.getItem('token') // ✅ Make sure token is stored after login
       }

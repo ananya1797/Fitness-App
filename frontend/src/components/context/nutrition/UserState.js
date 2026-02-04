@@ -17,7 +17,7 @@ const UserState = ({ children }) => {
       }
 
       try {
-        const response = await fetch('http://localhost:5000/api/fitness/getuser', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/fitness/getuser`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
