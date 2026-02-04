@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -11,10 +11,7 @@ import {
 } from 'recharts';
 
 function Workout() {
-    const [streak, setStreak] = useState(0);
-    const [streakCount, setStreakCount] = useState(0);
-const [showToast, setShowToast] = useState(false);
-
+  const [streak, setStreak] = useState(0);
   const [form, setForm] = useState({ targetArea: '', calories: '', time: '' });
   const [message, setMessage] = useState('');
   const [workouts, setWorkouts] = useState([]);
@@ -105,57 +102,47 @@ function calculateStreak(dates) {
   return streak >= 2 ? streak : 0;
 }
 
-  const fetchWorkouts = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/workouts/myworkouts`, {
-        headers: { 'auth-token': token }
-      });
+  const fetchWorkouts = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("token");
 
-      const data = res.data;
-      setWorkouts(data);
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/workouts/myworkouts`,
+      { headers: { "auth-token": token } }
+    );
 
-      // Calendar Dates
-      const dates = data.map(w => w.date.split('T')[0]);
-      setWorkoutDates(dates);
-      // Streak Calculation
-const sorted = [...dates].sort();
-let currentStreak = 0;
-for (let i = sorted.length - 1; i >= 0; i--) {
-  const d1 = new Date(sorted[i]);
-  const d2 = new Date();
-  d2.setDate(d2.getDate() - currentStreak);
+    const data = res.data;
+    setWorkouts(data);
 
-  if (d1.toDateString() === d2.toDateString()) {
-    currentStreak++;
-  } else {
-    break;
+    // Calendar dates
+    const dates = data.map(w => w.date.split("T")[0]);
+    setWorkoutDates(dates);
+
+    // Streak (single source of truth)
+    const streakValue = calculateStreak(dates);
+    setStreak(streakValue);
+
+    // Frequency by target area
+    const frequencyMap = {};
+    data.forEach(w => {
+      frequencyMap[w.targetArea] =
+        (frequencyMap[w.targetArea] || 0) + 1;
+    });
+
+    const chartData = Object.entries(frequencyMap).map(
+      ([targetArea, count]) => ({ targetArea, count })
+    );
+    setStats(chartData);
+  } catch (err) {
+    console.error("Failed to fetch workouts", err);
   }
-}
-setStreakCount(currentStreak);
+}, []);
 
-// Show toast only if streak is more than 1
-setShowToast(currentStreak > 1);
 
-      const streakCount = calculateStreak(dates);
-        setStreak(streakCount);
-
-      // Frequency by target area
-      const frequencyMap = {};
-      data.forEach(w => {
-        frequencyMap[w.targetArea] = (frequencyMap[w.targetArea] || 0) + 1;
-      });
-
-      const chartData = Object.entries(frequencyMap).map(([targetArea, count]) => ({ targetArea, count }));
-      setStats(chartData);
-    } catch (err) {
-      console.error('Failed to fetch workouts', err);
-    }
-  };
 
   useEffect(() => {
     fetchWorkouts();
-  }, []);
+  }, [fetchWorkouts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
